@@ -252,7 +252,7 @@ catch
     sca; rmpath(defaults.path.utilities)
     psychrethrow(psychlasterror);
     
-end;
+end
 
 %% End of Test Screren %%
 DrawFormattedText(w.win,'TEST COMPLETE\n\nPress any key to exit.','center','center',w.white,defaults.font.wrap);

@@ -45,3 +45,4 @@ else
     end
     chosen_device = keyboard_idx(chosen_device);
 end
+end

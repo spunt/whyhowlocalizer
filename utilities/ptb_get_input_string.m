@@ -23,6 +23,7 @@ while isempty(out)
     disp('ERROR: You entered nothing. Try again.');
     out = input(prompt, 's');
 end
+end
          
     
     
