@@ -1,18 +1,27 @@
-function out = score_task(in, option, nodisplay)
-% SCORE_TASK  Score Why/How Performance Data
+function out = score_task(in, option, write2file, nodisplay)
+% SCORE_TASK Score Why/How Localizer Behavioral Data
 %
-%   USAGE: out = score_task([in], option, nodisplay)
-%       
-%       in          = array of behavioral data filenames (.mat)
-%       option      = analysis option (see below)
-%       nodisplay   = flag to not display results to command window
-%              
-%           OPTIONS
-%               '1x2'       - why vs. how
-%               '2x2'       - full design
+%  USAGE: score_task()	*optional input
 %
-% CREATED: Bob Spunt, Ph.D. (bobspunt@gmail.com) - 2014.02.24
-% =========================================================================
+%  OUTPUT
+%	out:  
+%
+% __________________________________________________________________________
+%  INPUTS
+%	in:             array of behavioral data filenames (.mat)
+%	option:         option, '1x2' for why vs. how, '2x2' for full design
+%	write2file:     write report to CSV in current dir, 0=No (default), 1=Yes
+%	nodisplay:      flag to not display results to command window
+%
+% __________________________________________________________________________
+%  EXAMPLES
+%	>> score_task
+%
+
+% ---------------------- Copyright (C) 2015 Bob Spunt ----------------------
+%	Created:  2015-03-06
+%	Email:    spunt@caltech.edu
+% __________________________________________________________________________
 if nargin < 1
     [fname, pathname] = uigetfile({'*.mat', 'MAT-File'}, 'Select Behavioral Data File(s)', 'Multiselect', 'on');
     if isequal(fname,0) || isequal(pathname,0)
@@ -21,7 +30,8 @@ if nargin < 1
     in = fullfile(pathname, fname);
 end
 if nargin < 2, option = '2x2'; end
-if nargin < 3, nodisplay = 0; end
+if nargin < 3, write2file = 0; end
+if nargin < 4, nodisplay = 0; end
 if ischar(in), in = cellstr(in); end
 if iscell(option), option = lower(char(option)); end
  
@@ -32,28 +42,39 @@ for s = 1:length(in)
     subid{s} = d.subjectID;
     if ismember({'result'},fieldnames(d))
         data = d.result.trialSeeker;
+        blockwise = d.result.blockSeeker; 
         items = d.result.preblockcues(d.result.blockSeeker(:,4));
     else
         data = d.trialSeeker;
+        blockwise = d.blockSeeker; 
         items = d.ordered_questions;
     end
     
+    %% blockwise accuracy and durations
+    ntrials = length(data(data(:,1)==1,1));
+    blockwise(:,3) = data(data(:,2)==1, 6);
+    blockwise(:,4) = data(data(:,2)==ntrials, 9) - blockwise(:,3); 
     data(:,9) = data(:,4)==data(:,8);
-    %% re-code data
-    switch option
-        case {'1x2'}
-            labels = {'Why' 'How'};
-            data(data(:,3) < 3, 3) = 1;
-            data(data(:,3) > 2, 3) = 2;
-        case {'2x2'}
-            labels = {'WhyFace' 'WhyHand' 'HowFace' 'HowHand'};
+    
+    % compute block-wise accuracy
+    for b = 1:size(blockwise, 1)
+        blockwise(b,5) = sum(data(data(:,1)==b,9));  % block-wise accuracy
     end
+        
+    %% re-code data
+    if strcmpi(option, '1x2')
+        data(data(:,3) < 3, 3) = 1;
+        data(data(:,3) > 2, 3) = 2;
+    end
+    blockwise(:,2) = data(data(:,2)==1, 3);
+    ncond = length(unique(blockwise(:,2)));  
+    out.blockwise.data{s} = blockwise; 
     
     crt = [];
     crtyes = [];
     crtno = [];
-    
-    for c = 1:length(labels)
+
+    for c = 1:ncond
         
         %% indices
         allidx = find(data(:,3)==c);
@@ -98,6 +119,13 @@ for s = 1:length(in)
     nortwhycost(s,1) = (rtno(s,1) - rtno(s,2))/nanstd(crtno);
 
 end
+switch option
+    case {'1x2'}
+        labels = {'Why' 'How'};
+    case {'2x2'}
+        labels = {'WhyFace' 'WhyHand' 'HowFace' 'HowHand'};
+end
+out.condlabels = labels; 
 l1 = {'Accuracy' 'RT'};
 l2 = {'All' 'Yes' 'No'};
 l3 = labels;
@@ -115,11 +143,18 @@ for i = 1:length(l2)
     outcome{count} = ['RTcost_Why-How_' l2{i}];
 end
 alldata = [acc accyes accno rt rtyes rtno allrtwhycost yesrtwhycost nortwhycost];
+out.blockwise.columnlabels = {'Block' 'Condition' 'Onset' 'Duration' 'N Correct'}; 
 out.subjectid = subid;
 out.variables = outcome;
 out.data = alldata;
 if ~nodisplay, disptable(out.data', out.subjectid, out.variables, '%2.2f'); end
-   
+if write2file
+    reportname = sprintf('SCORE_REPORT_%s', option);
+    thereport = [{'ID'} out.variables];
+    thereport = [thereport; [out.subjectid' num2cell(out.data)]];
+    writereport(thereport, reportname);
+end
+
 end
 % SUBFUNCTIONS ------------------------------------------------------------
 function disptable(M, col_strings, row_strings, fmt, spaces)
@@ -302,7 +337,7 @@ else
     m = sum(x,dim) ./ n;
 end
 end
-function Y=nansum(X,dim)
+function Y = nansum(X,dim)
 if nargin<2 || ~isnumeric(dim)
     dim=1;
 end
@@ -312,4 +347,43 @@ end
 X(isnan(X))=0;
 Y=sum(X,dim);
 end
-    
+function outname = writereport(incell, basename)
+% WRITEREPORT Write cell array to CSV file
+%
+%  USAGE: outname = writereport(incell, basename)	*optional input
+% __________________________________________________________________________
+%  INPUTS
+%	incell:     cell array of character arrays
+%	basename:   base name for output csv file 
+%
+
+% ---------------------- Copyright (C) 2015 Bob Spunt ----------------------
+%	Created:  2015-02-02
+%	Email:    spunt@caltech.edu
+% __________________________________________________________________________
+if nargin < 1, disp('USAGE: outname = writereport(incell, basename)'); return; end
+if nargin < 2, basename = 'report'; end
+
+% | Construct filename
+% | ========================================================================
+day = strtrim(datestr(now,'mmm_DD_YYYY'));
+time = strtrim(datestr(now,'HHMMSSPM'));
+outname = [basename '_' day '_' time '.csv'];
+
+% | Convert all cell contents to character arrays
+% | ========================================================================
+[nrow, ncol] = size(incell);
+for i = 1:numel(incell)
+    if isnumeric(incell{i}), incell{i} = num2str(incell{i}); end
+    if strcmp(incell{i},'NaN'), incell{i} = ''; end
+end
+incell = regexprep(incell, ',', '');
+
+% | Write to file
+% | ========================================================================
+fid = fopen(outname,'w');
+for r = 1:nrow
+    fprintf(fid,['%s' repmat(',%s',1,ncol-1) '\n'],incell{r,:});
+end
+fclose(fid);
+end
