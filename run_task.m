@@ -80,6 +80,10 @@ pbc_brief           = regexprep(design.preblockcues,'Is the person ','');
 blockSeeker         = design.blockSeeker;
 trialSeeker         = design.trialSeeker;
 nTrialsBlock        = length(unique(trialSeeker(:,2)));
+
+
+
+
 trialSeeker(:,6:9)  = 0;
 totalTime           = design.totalTime;
 
