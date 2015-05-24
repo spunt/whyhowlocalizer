@@ -7,23 +7,27 @@ function run_task(order, test_tag)
 %       order:      choose from 1,2,3, or 4 - 0 (default) will choose randomly
 %       test_tag:   if set to 1, will quit after first block
 %
-%   Default total runtime from trigger onset is 304 seconds. To view or
-%   modify task defaults, use the task_defaults.m file.To run the task, use
-%   the run_task.m file. It accepts two arguments. The first specifies the
-%   order to use. There are 4 orders to choose from. If you do not specify
-%   this argument, if you leave it empty, or if you define as zero, then
-%   the order will be randomly chosen for you. The second argument, when
+%   This function accepts two arguments. The first specifies the order to
+%   use. There are 4 orders to choose from. If you do not specify this
+%   argument, if you leave it empty, or if you define as zero, then the
+%   order will be randomly chosen for you. The second argument, when
 %   specified with the value of "1", will do a brief test run of the task
 %   (which lasts only 20 seconds).
-%
-%   FOR MORE INFORMATION, SEE STUDY 3 IN
-%    Spunt, R. P., & Adolphs, R. (2014). Validating the why/how contrast 
-%    for functional mri studies of theory of mind. Neuroimage, 99, 301-311.
 %
 %   EXAMPLE USAGE
 %    >> run_task        % Runs a randomly chosen order of the full task
 %    >> run_task(3)     % Runs order #3 of the full task
 %    >> run_task(0, 1)  % Does a brief test run of a randomly chosen order
+%
+%   Total runtime depends on settings in the task_defaults.m file that
+%   should be in the same folder as this file. The default runtime from
+%   trigger onset is 304 seconds. This corresponds to the 'fast' setting
+%   under defaults.pace in the task_defaults.m file. The default runtime
+%   for the 'slow' setting is 382 seconds. These values may be
+%   automatically adjusted to be a multiple of your TR, which is also
+%   specified in the task_defaults.m file. See the task_defaults.m file for
+%   further information. To see the actual run time for the settings you've
+%   specified, simply run this function. 
 %
 %   COLUMN KEY FOR KEY OUTPUT VARIABLES (SAVED ON TASK COMPLETION)
 % 
@@ -47,6 +51,10 @@ function run_task(order, test_tag)
 %     8 - (saved during runtime) actual response [0 if No Resp]
 %     9 - (saved during runtime) actual trial offset
 %
+%   FOR DESIGN DETAILS, SEE STUDY 3 IN:
+%    Spunt, R. P., & Adolphs, R. (2014). Validating the why/how contrast 
+%    for functional mri studies of theory of mind. Neuroimage, 99, 301-311.
+%
 %   This code uses Psychophysics Toolbox Version 3 (PTB-3) running in
 %   MATLAB (The Mathworks, Inc.). To learn more: http://psychtoolbox.org
 %_______________________________________________________________________
@@ -64,7 +72,7 @@ catch
 end
 
 %% Print Title %%
-script_name='--------- Photo Judgment Test ---------'; boxTop(1:length(script_name))='=';
+script_name='----------- Photo Judgment Test -----------'; boxTop(1:length(script_name))='=';
 fprintf('\n%s\n%s\n%s\n',boxTop,script_name,boxTop)
 
 %% DEFAULTS %%
@@ -77,18 +85,35 @@ load([defaults.path.design filesep 'design.mat'])
 if order==0, randidx = randperm(4); order = randidx(1); end
 design              = alldesign{order};
 pbc_brief           = regexprep(design.preblockcues,'Is the person ','');
-blockSeeker         = design.blockSeeker;
 trialSeeker         = design.trialSeeker;
-nTrialsBlock        = length(unique(trialSeeker(:,2)));
-
-
-
-
 trialSeeker(:,6:9)  = 0;
-totalTime           = design.totalTime;
+blockSeeker         = design.blockSeeker;
+BOA                 = diff([blockSeeker(:,3); design.totalTime]);
+nTrialsBlock        = length(unique(trialSeeker(:,2)));
+switch lower(defaults.pace)
+    case 'fast'
+        defaults.cueDur         = 2.10;   % dur of question presentation
+        defaults.maxDur         = 1.70;   % (max) dur of trial 
+        defaults.ISI            = 0.30;   % dur of interval between stimuli within blocks
+        defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block
+    case 'slow'
+        defaults.cueDur         = 2.50;   % dur of question presentation
+        defaults.maxDur         = 2.20;   % (max) dur of trial 
+        defaults.ISI            = 0.30;   % dur of interval between stimuli within blocks
+        defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block 
+        maxBlockDur             = defaults.cueDur + defaults.firstISI + (nTrialsBlock*defaults.maxDur) + (nTrialsBlock-1)*defaults.ISI;
+        BOA                     = BOA + (maxBlockDur - min(BOA));
+    otherwise
+        fprintf('\n\n| - Invalid option in "defaults.pace" \n| - Valid options: ''fast'' or ''slow'' (change in task_defaults.m)\n\n'); 
+        return; 
+end
+eventTimes          = cumsum([defaults.prestartdur; BOA]); 
+blockSeeker(:,3)    = eventTimes(1:end-1);
+numTRs              = ceil(eventTimes(end)/defaults.TR); 
+totalTime           = defaults.TR*numTRs; 
 
 %% Print Defaults %%
-fprintf('Test Duration:         %d seconds', totalTime);
+fprintf('Test Duration:         %d secs (%d TRs)', totalTime, numTRs);
 fprintf('\nTrigger Key:           %s', defaults.trigger);
 fprintf(['\nValid Response Keys:   %s' repmat(', %s', 1, length(defaults.valid_keys)-1)], defaults.valid_keys{:});
 fprintf('\nForce Quit Key:        %s\n', defaults.escape);

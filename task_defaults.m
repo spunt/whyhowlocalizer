@@ -3,8 +3,8 @@ function defaults = task_defaults
 %
 % You can modify the values below to suit your particular needs. Note that
 % some combinations of modifications may not work, so if you do modify 
-% anything, make sure to do a test run before running a subject. The values
-% currently specified were used in study used to validate the task. See:
+% anything, make sure to do a test run before running a subject. The default
+% values were used in study used to validate the task. See:
 %
 %    Spunt, R. P., & Adolphs, R. (2014). Validating the why/how contrast 
 %    for functional mri studies of theory of mind. Neuroimage, 99, 301-311.
@@ -30,7 +30,7 @@ defaults.path.base      = pwd;
 defaults.path.data      = fullfile(defaults.path.base, 'data');
 defaults.path.stim      = fullfile(defaults.path.base, 'stimuli');
 defaults.path.design    = fullfile(defaults.path.base, 'design');
-defaults.path.utilities = fullfile(defaults.path.base, 'utilities');
+defaults.path.utilities = fullfile(defaults.path.base, 'ptb-utilities');
 
 % Text 
 %==========================================================================
@@ -41,14 +41,20 @@ defaults.font.wrap      = 42; % default font wrapping (arg to DrawFormattedText)
 
 % Timing (specify all in seconds)
 %==========================================================================
-defaults.cueDur         = 2.10;   % dur of question presentation
-defaults.ignoreDur      = 0.15;   % dur after trial presentation in which 
-                                  % button presses are ignored (this is
-                                  % useful when participant provides a late
-                                  % response to the previous trial)
-defaults.maxDur         = 1.70;   % (max) dur of trial 
-defaults.ISI            = 0.30;   % dur of interval between trials
-defaults.firstISI       = 0.15;   % dur of interval between question and   
-                                  % first trial of each block
-                               
+defaults.TR             = 1;        % Your TR (in secs) - Task runtime will be adjusted
+                                    % to a multiple of the TR
+defaults.pace           = 'fast';   % choose between 'fast' (default) and 'slow'
+                                    % 'slow' gives participants more time to
+                                    % read the question cues and make their
+                                    % response and may be ideal for studies
+                                    % in patient populations or children                         
+defaults.prestartdur    = 4;        % duration of fixation period after trigger
+                                    % and before first block                              
+defaults.ignoreDur      = 0.15;     % dur after trial presentation in which 
+                                    % button presses are ignored (this is
+                                    % useful when participant provides a late
+                                    % response to the previous trial)
+                                    % DEFAULT VALUE = 0.15
 end
+
+
