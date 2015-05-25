@@ -12,6 +12,15 @@ function defaults = task_defaults
 %__________________________________________________________________________
 % Copyright (C) 2014  Bob Spunt, Ph.D.
 
+% Paths
+%==========================================================================
+defaults.language       = 'english'; % 'english' (default) or 'german'
+defaults.pace           = 'fast'; % 'fast' (default) or 'slow'
+                                  % 'slow' gives participants more time to
+                                  % read the question cues and make their
+                                  % response and may be ideal for studies
+                                  % in patient populations or children   
+
 % Screen Resolution
 %==========================================================================
 defaults.screenres      = [1024 768];   % recommended screen resolution (if 
@@ -28,9 +37,14 @@ defaults.escape         = 'ESCAPE'; % escape key (to exit early)
 %==========================================================================
 defaults.path.base      = pwd;
 defaults.path.data      = fullfile(defaults.path.base, 'data');
-defaults.path.stim      = fullfile(defaults.path.base, 'stimuli');
-defaults.path.design    = fullfile(defaults.path.base, 'design');
 defaults.path.utilities = fullfile(defaults.path.base, 'ptb-utilities');
+if strcmpi(defaults.language, 'german')
+    defaults.path.stim      = fullfile(defaults.path.base, 'stimuli/german');
+    defaults.path.design    = fullfile(defaults.path.base, 'design/german');
+else
+    defaults.path.stim      = fullfile(defaults.path.base, 'stimuli');
+    defaults.path.design    = fullfile(defaults.path.base, 'design');
+end
 
 % Text 
 %==========================================================================
@@ -42,12 +56,7 @@ defaults.font.wrap      = 42; % default font wrapping (arg to DrawFormattedText)
 % Timing (specify all in seconds)
 %==========================================================================
 defaults.TR             = 1;        % Your TR (in secs) - Task runtime will be adjusted
-                                    % to a multiple of the TR
-defaults.pace           = 'fast';   % choose between 'fast' (default) and 'slow'
-                                    % 'slow' gives participants more time to
-                                    % read the question cues and make their
-                                    % response and may be ideal for studies
-                                    % in patient populations or children                         
+                                    % to a multiple of the TR                      
 defaults.prestartdur    = 4;        % duration of fixation period after trigger
                                     % and before first block                              
 defaults.ignoreDur      = 0.15;     % dur after trial presentation in which 

@@ -84,7 +84,12 @@ addpath(defaults.path.utilities)
 load([defaults.path.design filesep 'design.mat'])
 if order==0, randidx = randperm(4); order = randidx(1); end
 design              = alldesign{order};
-pbc_brief           = regexprep(design.preblockcues,'Is the person ','');
+switch lower(defaults.language)
+    case 'german'
+        pbc_brief           = design.preblockcues; 
+    otherwise
+        pbc_brief           = regexprep(design.preblockcues,'Is the person ','');
+end
 trialSeeker         = design.trialSeeker;
 trialSeeker(:,6:9)  = 0;
 blockSeeker         = design.blockSeeker;
@@ -208,17 +213,19 @@ try
         Screen('DrawTexture',w.win, fixTex); Screen('Flip',w.win);
 
         %% Get Data for This Block (While Waiting for Block Onset) %%
-        tmpSeeker = trialSeeker(trialSeeker(:,1)==b,:);
-        pbcue = pbc_brief{blockSeeker(b,4)};        % question cue
-        isicue = design.isicues{blockSeeker(b,4)};  % isi cue
-        isicue_x = isicues_xpos(blockSeeker(b,4));  % isi cue x position
-        isicue_y = isicues_ypos(blockSeeker(b,4));  % isi cue y position
+        tmpSeeker   = trialSeeker(trialSeeker(:,1)==b,:);
+        pbcue       = pbc_brief{blockSeeker(b,4)};  % question cue
+        isicue      = design.isicues{blockSeeker(b,4)};  % isi cue
+        isicue_x    = isicues_xpos(blockSeeker(b,4));  % isi cue x position
+        isicue_y    = isicues_ypos(blockSeeker(b,4));  % isi cue y position
 
         %% Prepare Question Cue Screen (Still Waiting) %%
-        Screen('TextSize',w.win,defaults.font.size1); Screen('TextStyle',w.win,0);
-        DrawFormattedText(w.win,'Is the person\n\n\n','center','center',w.white,defaults.font.wrap);
-        Screen('TextStyle',w.win,1); Screen('TextSize',w.win,defaults.font.size2);
-        DrawFormattedText(w.win,pbcue,'center','center',w.white,defaults.font.wrap);
+        if ~strcmpi(defaults.language, 'german')
+            Screen('TextSize',w.win, defaults.font.size1); Screen('TextStyle', w.win, 0);
+            DrawFormattedText(w.win,'Is the person\n\n\n','center','center',w.white, defaults.font.wrap);
+            Screen('TextStyle',w.win, 1); Screen('TextSize', w.win, defaults.font.size2);
+        end
+        DrawFormattedText(w.win, pbcue,'center','center', w.white, defaults.font.wrap);
 
         %% Present Question Screen and Prepare First ISI (Blank) Screen %%
         WaitSecs('UntilTime',anchor + blockSeeker(b,3)); Screen('Flip', w.win);
@@ -283,18 +290,18 @@ catch
     
 end
 
-%% End of Test Screren %%
+%% End of Test Screen %%
 DrawFormattedText(w.win,'TEST COMPLETE\n\nPress any key to exit.','center','center',w.white,defaults.font.wrap);
 Screen('Flip', w.win); 
 KbWait; 
 
 %% Create Results Structure %%
-result.blockSeeker = blockSeeker; 
-result.trialSeeker = trialSeeker;
-result.qim = design.qim;
-result.qdata = design.qdata;
+result.blockSeeker  = blockSeeker; 
+result.trialSeeker  = trialSeeker;
+result.qim          = design.qim;
+result.qdata        = design.qdata;
 result.preblockcues = design.preblockcues; 
-result.isicues = design.isicues; 
+result.isicues      = design.isicues; 
 
 %% Save Data to Matlab Variable %%
 d=clock;
@@ -302,7 +309,7 @@ outfile=sprintf('whyhow_%s_order%d_%s_%02.0f-%02.0f.mat',subjectID,order,date,d(
 try
     save([defaults.path.data filesep outfile], 'subjectID', 'result', 'slideName', 'defaults'); 
 catch
-	fprintf('couldn''t save %s\n saving to whyhow.mat\n',outfile);
+	fprintf('couldn''t save %s\n saving to whyhow.mat\n', outfile);
 	save whyhow.mat
 end;
 
