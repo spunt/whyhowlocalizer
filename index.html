@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>whyhowloc by spunt</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">whyhowloc</h1>
+        <p class="header">Materials and MATLAB Psychtoolbox code for running the Why/How Localizer Task</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/spunt/whyhowlocalizer/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/spunt/whyhowlocalizer/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/spunt/whyhowlocalizer">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/spunt">spunt</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="the-whyhow-localizer-task" class="anchor" href="#the-whyhow-localizer-task" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Why/How Localizer Task</h1>
+
+<h2>
+<a id="contents" class="anchor" href="#contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contents</h2>
+
+<ol>
+<li><a href="#about">About</a></li>
+<li><a href="#overview-of-the-contrasts">Overview of the Contrasts</a></li>
+<li><a href="#running-the-task">Running the Task</a></li>
+<li><a href="#modifying-task-defaults">Modifying Task Defaults</a></li>
+<li><a href="#scoring-the-task">Scoring the task</a></li>
+<li><a href="#have-questions">Have Questions?</a></li>
+</ol>
+
+<h2>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>The Why/How Localizer Task is a robust, efficient, and standardized task for investigating social cognition. Although the task is optimized for administration during fMRI, it yields reliable performance outcomes and thus may be useful for behavioral studies. The standardized version available here corresponds to the version reported in Study 3 of <a href="https://raw.githubusercontent.com/spunt/bspmview/master/resources/Spunt_Adolphs_2014_NeuroImage.pdf">Spunt and Adolphs (2014)</a>. It features the 2 x 2 factorial design shown below:</p>
+
+<p><img src="https://raw.githubusercontent.com/spunt/whyhowlocalizer/master/resources/design.jpg" alt="Factorial Design"></p>
+
+<p>Given the factorial design, the <em>Why/How</em> contrast can be used to isolates regions that are primarily modulated by the differential demands of Why vs. How judgments, while the <em>Face/Hand</em> contrast can be used to isolate regions that are primarily modulated by identity of the social stimulus being evaluated. </p>
+
+<h2>
+<a id="overview-of-the-contrasts" class="anchor" href="#overview-of-the-contrasts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview of the Contrasts</h2>
+
+<p>In the validation paper, our focus was on the <em>Why/How</em> contrast, which reliably modulates activity in brain regions thought to be important for various aspects of higher-order social cognition. The thresholded <em>Why/How</em> contrast is depicted below: </p>
+
+<p><img src="https://raw.githubusercontent.com/spunt/whyhowlocalizer/master/resources/whyhowcontrast.jpg" alt="Why/How Contrast"> </p>
+
+<p>The <em>Why &gt; How</em> comparison isolates brain regions commonly observed in studies in which participants are induced to impute and reason about the mental states of others, or what is often called either "mentalizing" or "theory-of-mind". Importantly, in Study 2 of the validation paper we showed that the <em>Why &gt; How</em> contrast is distinct from the <em>Belief &gt; Photo</em> contrast produced by the <a href="http://saxelab.mit.edu/superloc.php">Theory-of-Mind Localizer</a> developed by Dr. Rebecca Saxe. In other words, the two contrasts isolate distinct uses of the broad and complex human ability to reason about the minds of others. Conversely, the <em>How &gt; Why</em> contrast produces activity in brain regions thought to be important for understanding and naming the specific motor actions that makeup actions and emotional expressions. A subset of these regions are part of what is (controversially) known as the human mirror neuron system, often called simply the "mirror" system. The unthresholded group-level t-statistic maps reported in the study are available at <a href="http://neurovault.org/collections/445/">Neurovault</a>. </p>
+
+<p>The thresholded <em>Face/Hand</em> contrast is depicted below: </p>
+
+<p><img src="https://raw.githubusercontent.com/spunt/whyhowlocalizer/master/resources/facehandcontrast.jpg" alt="Face/Hand Contrast"></p>
+
+<h2>
+<a id="running-the-task" class="anchor" href="#running-the-task" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running the Task</h2>
+
+<p>To run the task, use the <em>run_task.m</em> file. It accepts two arguments. The first specifies the order to use. There are 4 orders to choose from. If you do not specify this argument, if you leave it empty, or if you define as zero, then one of the four orders will be randomly selected. The second argument, when specified with the value of "1", will do a brief test run of the task (which lasts only 20 seconds). For example, this will run a randomly chosen order of the complete task:</p>
+
+<pre><code>&gt;&gt; run_task 
+</code></pre>
+
+<p>This will run order #3 of the complete task:</p>
+
+<pre><code>&gt;&gt; run_task(3)   
+</code></pre>
+
+<p>This will run a test run (consisting of just the 1st task block) of a randomly chosen order:    </p>
+
+<pre><code>&gt;&gt; run_task(0, 1)           
+</code></pre>
+
+<h2>
+<a id="modifying-task-defaults" class="anchor" href="#modifying-task-defaults" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modifying Task Defaults</h2>
+
+<p>This task uses <a href="http://psychtoolbox.org">Psychophysics Toolbox Version 3 (PTB-3)</a> running in MATLAB (The Mathworks, Inc.). Total runtime depends on settings in the <em>task_defaults.m</em> file that should be in the same folder as this file. In this file, you can set the <strong>defaults.prestartdur</strong> variable to change the duration of the fixation period following the trigger and before the first task block (default = 4 secs). In addition, you can set the <strong>defaults.pace</strong> variable to select either the default <em>fast</em> or optional <em>slow</em> version of the task. The <em>slow</em> version gives participants more time to read the question cues and make their responses and may be ideal for studies in patient populations or children. The timing of the two versions is shown below (this assumes that the <strong>defaults.prestartdur</strong> variable is at the default value of 4 secs): </p>
+
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="center"><strong>Fast</strong></th>
+<th align="center"><strong>Slow</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>Question Cue</strong></td>
+<td align="center">2100 ms</td>
+<td align="center">2500 ms</td>
+</tr>
+<tr>
+<td align="left"><strong>Target Stimulus (max)</strong></td>
+<td align="center">1700 ms</td>
+<td align="center">2250 ms</td>
+</tr>
+<tr>
+<td align="left"><strong>Total Runtime</strong></td>
+<td align="center">5:04</td>
+<td align="center">6:28</td>
+</tr>
+</tbody>
+</table>
+
+<p>In addition to these timing parameters, several other potentially useful settings can be adjusted in the <strong>task_defaults.m</strong> file. You can check them out in the file itself. </p>
+
+<h2>
+<a id="scoring-the-task" class="anchor" href="#scoring-the-task" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scoring the Task</h2>
+
+<p>The <em>score_task.m</em> function can be used to score an output data file. This function will also return onsets and durations for the conditions that can be used to construct single-subject regression models. </p>
+
+<h3>
+<a id="have-questions" class="anchor" href="#have-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Have Questions?</h3>
+
+<p>Feel free to shoot me (Bob) an email at: <a href="mailto:bobspunt@gmail.com">bobspunt@gmail.com</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-56476723-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
