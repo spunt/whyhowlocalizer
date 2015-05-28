@@ -103,7 +103,7 @@ switch lower(defaults.pace)
         defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block
     case 'slow'
         defaults.cueDur         = 2.50;   % dur of question presentation
-        defaults.maxDur         = 2.20;   % (max) dur of trial 
+        defaults.maxDur         = 2.25;   % (max) dur of trial 
         defaults.ISI            = 0.30;   % dur of interval between stimuli within blocks
         defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block 
         maxBlockDur             = defaults.cueDur + defaults.firstISI + (nTrialsBlock*defaults.maxDur) + (nTrialsBlock-1)*defaults.ISI;

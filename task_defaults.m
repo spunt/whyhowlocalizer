@@ -15,7 +15,7 @@ function defaults = task_defaults
 % Paths
 %==========================================================================
 defaults.language       = 'english'; % 'english' (default) or 'german'
-defaults.pace           = 'fast'; % 'fast' (default) or 'slow'
+defaults.pace           = 'slow'; % 'fast' (default) or 'slow'
                                   % 'slow' gives participants more time to
                                   % read the question cues and make their
                                   % response and may be ideal for studies
