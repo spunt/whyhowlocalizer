@@ -1,5 +1,5 @@
 function run_task(order, test_tag)
-% RUN_TEST  Run Why/How Localizer Task
+% RUN_TASK  Run Why/How Localizer Task
 %  
 %   USAGE: run_task([order], [test_tag])
 %
@@ -202,7 +202,7 @@ anchor=secs;
 
 try
 
-    if test_tag, nBlocks = 1; totalTime = 20; % for test run
+    if test_tag, nBlocks = 1; totalTime = round(totalTime*.075); % for test run
     else nBlocks = length(blockSeeker); end
     %======================================================================
     % BEGIN BLOCK LOOP
