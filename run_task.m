@@ -1,6 +1,6 @@
 function run_task(order, test_tag)
 % RUN_TASK  Run Why/How Localizer Task
-%  
+%
 %   USAGE: run_task([order], [test_tag])
 %
 %   OPTIONAL ARGUMENTS
@@ -27,10 +27,10 @@ function run_task(order, test_tag)
 %   automatically adjusted to be a multiple of your TR, which is also
 %   specified in the task_defaults.m file. See the task_defaults.m file for
 %   further information. To see the actual run time for the settings you've
-%   specified, simply run this function. 
+%   specified, simply run this function.
 %
 %   COLUMN KEY FOR KEY OUTPUT VARIABLES (SAVED ON TASK COMPLETION)
-% 
+%
 %     blockSeeker (stores block-wise runtime data)
 %     1 - block #
 %     2 - condition (1=WhyFace, 2=WhyHand, 3=HowFace, 4=HowHand)
@@ -39,7 +39,7 @@ function run_task(order, test_tag)
 %     a structure stored in the design.mat file. Both are cell arrays
 %     containing the filenames for the cue screens contained in thefolder
 %     "questions")
-% 
+%
 %     trialSeeker (stores trial-wise runtime data)
 %     1 - block #
 %     2 - trial # (within-block)
@@ -52,7 +52,7 @@ function run_task(order, test_tag)
 %     9 - (saved during runtime) actual trial offset
 %
 %   FOR DESIGN DETAILS, SEE STUDY 3 IN:
-%    Spunt, R. P., & Adolphs, R. (2014). Validating the why/how contrast 
+%    Spunt, R. P., & Adolphs, R. (2014). Validating the why/how contrast
 %    for functional mri studies of theory of mind. Neuroimage, 99, 301-311.
 %
 %   This code uses Psychophysics Toolbox Version 3 (PTB-3) running in
@@ -76,7 +76,8 @@ script_name='----------- Photo Judgment Test -----------'; boxTop(1:length(scrip
 fprintf('\n%s\n%s\n%s\n',boxTop,script_name,boxTop)
 
 %% DEFAULTS %%
-defaults = task_defaults; 
+defaults = task_defaults;
+KbName('UnifyKeyNames');
 trigger = KbName(defaults.trigger);
 addpath(defaults.path.utilities)
 
@@ -86,7 +87,7 @@ if order==0, randidx = randperm(4); order = randidx(1); end
 design              = alldesign{order};
 switch lower(defaults.language)
     case 'german'
-        pbc_brief           = design.preblockcues; 
+        pbc_brief           = design.preblockcues;
     otherwise
         pbc_brief           = regexprep(design.preblockcues,'Is the person ','');
 end
@@ -98,24 +99,24 @@ nTrialsBlock        = length(unique(trialSeeker(:,2)));
 switch lower(defaults.pace)
     case 'fast'
         defaults.cueDur         = 2.10;   % dur of question presentation
-        defaults.maxDur         = 1.70;   % (max) dur of trial 
+        defaults.maxDur         = 1.70;   % (max) dur of trial
         defaults.ISI            = 0.30;   % dur of interval between stimuli within blocks
         defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block
     case 'slow'
         defaults.cueDur         = 2.50;   % dur of question presentation
-        defaults.maxDur         = 2.25;   % (max) dur of trial 
+        defaults.maxDur         = 2.25;   % (max) dur of trial
         defaults.ISI            = 0.30;   % dur of interval between stimuli within blocks
-        defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block 
+        defaults.firstISI       = 0.15;   % dur of interval between question and first trial of each block
         maxBlockDur             = defaults.cueDur + defaults.firstISI + (nTrialsBlock*defaults.maxDur) + (nTrialsBlock-1)*defaults.ISI;
         BOA                     = BOA + (maxBlockDur - min(BOA));
     otherwise
-        fprintf('\n\n| - Invalid option in "defaults.pace" \n| - Valid options: ''fast'' or ''slow'' (change in task_defaults.m)\n\n'); 
-        return; 
+        fprintf('\n\n| - Invalid option in "defaults.pace" \n| - Valid options: ''fast'' or ''slow'' (change in task_defaults.m)\n\n');
+        return;
 end
-eventTimes          = cumsum([defaults.prestartdur; BOA]); 
+eventTimes          = cumsum([defaults.prestartdur; BOA]);
 blockSeeker(:,3)    = eventTimes(1:end-1);
-numTRs              = ceil(eventTimes(end)/defaults.TR); 
-totalTime           = defaults.TR*numTRs; 
+numTRs              = ceil(eventTimes(end)/defaults.TR);
+totalTime           = defaults.TR*numTRs;
 
 %% Print Defaults %%
 fprintf('Test Duration:         %d secs (%d TRs)', totalTime, numTRs);
@@ -146,7 +147,7 @@ switch upper(computer)
     inputDevice = [];
 end
 resp_set = ptb_response_set([defaults.valid_keys defaults.escape]); % response set
- 
+
 %% Initialize Screen %%
 try
     w = ptb_setup_screen(0,250,defaults.font.name,defaults.font.size1, defaults.screenres); % setup screen
@@ -167,7 +168,7 @@ fprintf(fid,'Started: %s %2.0f:%02.0f\n',date,d(4),d(5));
 DrawFormattedText(w.win,sprintf('LOADING\n\n0%% complete'),'center','center',w.white,defaults.font.wrap);
 Screen('Flip',w.win);
 slideName = cell(length(design.qim));
-slideTex = slideName; 
+slideTex = slideName;
 for i = 1:length(design.qim)
     slideName{i} = design.qim{i,2};
     tmp1 = imread([defaults.path.stim filesep slideName{i}]);
@@ -181,7 +182,7 @@ fixTex = Screen('MakeTexture', w.win, imread([defaults.path.stim filesep 'fixati
 
 %% Get Coordinates for Centering ISI Cues
 isicues_xpos = zeros(length(design.isicues),1);
-isicues_ypos = isicues_xpos; 
+isicues_ypos = isicues_xpos;
 for q = 1:length(design.isicues)
     [isicues_xpos(q), isicues_ypos(q)] = ptb_center_position(design.isicues{q},w.win);
 end
@@ -189,7 +190,7 @@ end
 %==========================================================================
 %
 % START TASK PRESENTATION
-% 
+%
 %==========================================================================
 
 %% Present Instruction Screen %%
@@ -197,8 +198,8 @@ Screen('DrawTexture',w.win, instructTex); Screen('Flip',w.win);
 
 %% Wait for Trigger to Begin %%
 DisableKeysForKbCheck([]);
-secs=KbTriggerWait(trigger,inputDevice);	
-anchor=secs;	
+secs=KbTriggerWait(trigger,inputDevice);
+anchor=secs;
 
 try
 
@@ -207,7 +208,7 @@ try
     %======================================================================
     % BEGIN BLOCK LOOP
     %======================================================================
-    for b = 1:nBlocks 
+    for b = 1:nBlocks
 
         %% Present Fixation Screen Until Question Onset %%
         Screen('DrawTexture',w.win, fixTex); Screen('Flip',w.win);
@@ -233,11 +234,11 @@ try
 
         %% Present Blank Screen Prior to First Trial %%
         WaitSecs('UntilTime',anchor + blockSeeker(b,3) + defaults.cueDur); Screen('Flip', w.win);
-        
+
         %==================================================================
         % BEGIN TRIAL LOOP
         %==================================================================
-        for t = 1:nTrialsBlock 
+        for t = 1:nTrialsBlock
 
             %% Prepare Screen for Current Trial %%
             Screen('DrawTexture',w.win,slideTex{tmpSeeker(t,5)})
@@ -259,14 +260,15 @@ try
 
             %% Present ISI, and Look a Little Longer for a Response if None Was Registered %%
             Screen('Flip', w.win);
-            norespyet = isempty(resp); 
+            norespyet = isempty(resp);
             if norespyet, [resp, rt] = ptb_get_resp_windowed_noflip(inputDevice, resp_set, defaults.ISI*0.90); end
             if ~isempty(resp)
                 if strcmpi(resp, defaults.escape)
                     sca; rmpath(defaults.path.utilities)
                     fprintf('\nESCAPE KEY DETECTED\n'); return
                 end
-                tmpSeeker(t,8) = str2num(resp(1));
+                tmpSeeker(t,8) = find(strcmpi(KbName(resp_set), resp)); 
+%                 tmpSeeker(t,8) = str2num(resp(1));
                 tmpSeeker(t,7) = rt + (defaults.maxDur*norespyet);
             end
             tmpSeeker(t,9) = offset_dur;
@@ -276,42 +278,42 @@ try
         %% Store Block Data & Print to Logfile %%
         trialSeeker(trialSeeker(:,1)==b,:) = tmpSeeker;
         for t = 1:size(tmpSeeker,1), fprintf(fid,[repmat('%d\t',1,size(tmpSeeker,2)) '\n'],tmpSeeker(t,:)); end
-        
+
 
     end % END BLOCK LOOP
-    
+
     %% Present Fixation Screen Until End of Scan %%
     WaitSecs('UntilTime', anchor + totalTime);
 
 catch
-    
+
     sca; rmpath(defaults.path.utilities)
     psychrethrow(psychlasterror);
-    
+
 end
 
-%% End of Test Screen %%
-DrawFormattedText(w.win,'TEST COMPLETE\n\nPress any key to exit.','center','center',w.white,defaults.font.wrap);
-Screen('Flip', w.win); 
-KbWait; 
-
 %% Create Results Structure %%
-result.blockSeeker  = blockSeeker; 
+result.blockSeeker  = blockSeeker;
 result.trialSeeker  = trialSeeker;
 result.qim          = design.qim;
 result.qdata        = design.qdata;
-result.preblockcues = design.preblockcues; 
-result.isicues      = design.isicues; 
+result.preblockcues = design.preblockcues;
+result.isicues      = design.isicues;
 
 %% Save Data to Matlab Variable %%
 d=clock;
 outfile=sprintf('whyhow_%s_order%d_%s_%02.0f-%02.0f.mat',subjectID,order,date,d(4),d(5));
 try
-    save([defaults.path.data filesep outfile], 'subjectID', 'result', 'slideName', 'defaults'); 
+    save([defaults.path.data filesep outfile], 'subjectID', 'result', 'slideName', 'defaults');
 catch
 	fprintf('couldn''t save %s\n saving to whyhow.mat\n', outfile);
 	save whyhow.mat
 end;
+
+%% End of Test Screen %%
+DrawFormattedText(w.win,'TEST COMPLETE\n\nPress any key to exit.','center','center',w.white,defaults.font.wrap);
+Screen('Flip', w.win);
+ptb_any_key; 
 
 %% Exit %%
 sca; rmpath(defaults.path.utilities)

@@ -29,10 +29,20 @@ defaults.screenres      = [1024 768];   % recommended screen resolution (if
 
 % Response Keys
 %==========================================================================
-defaults.trigger        = '5%'; % trigger key (to start ask)
-defaults.valid_keys     = {'1!' '2@' '3#' '4$'}; % valid response keys
 defaults.escape         = 'ESCAPE'; % escape key (to exit early)
-                                
+% defaults.trigger        = '5%'; % task trigger key
+defaults.trigger        = 't'; % trigger key (to start ask)
+% defaults.valid_keys     = {'1!' '2@' '3#' '4$'}; % valid response keys...
+defaults.valid_keys     = {'a' 's' 'd' 'f'}; % valid response keys
+% These correspond to the keys that the participant can use to make their
+% responses during task performance. The key in the first position (e.g.,
+% '1!') will be numerically coded as a 1 in the output data file; the key
+% in the second position as a 3; and so on. Given that the subject is
+% making a binary choice on each trial, you will need to specify AT LEAST
+% two keys. If the subject is using a button box, it may be desirable to
+% include all buttons on the box in case the subject winds up having their
+% fingers on the wrong keys.
+
 % Paths
 %==========================================================================
 defaults.path.base      = pwd;
