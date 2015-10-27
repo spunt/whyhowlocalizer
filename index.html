@@ -48,7 +48,10 @@
 <h2>
 <a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h2>
 
-<p>The Why/How Localizer Task is a robust, efficient, and standardized task for investigating social cognition. Although the task is optimized for administration during fMRI, it yields reliable performance outcomes and thus may be useful for behavioral studies. The standardized version available here corresponds to the version reported in Study 3 of <a href="https://raw.githubusercontent.com/spunt/bspmview/master/resources/Spunt_Adolphs_2014_NeuroImage.pdf">Spunt and Adolphs (2014)</a>. It features the 2 x 2 factorial design shown below:</p>
+<p>The Why/How Localizer Task is a robust, efficient, and standardized task for investigating social cognition. Although the task is optimized for administration during fMRI, it yields reliable performance outcomes and thus may be useful for behavioral studies. The standardized version available here corresponds to the version reported in Study 3 of <a href="http://www.bobspunt.com/papers/pdf/Spunt_&_Adolphs_2014.pdf">Spunt and Adolphs (2014)</a>. It features the 2 x 2 factorial design shown below:</p>
+
+<p><strong>Spunt RP</strong> &amp; Adolphs R (2014). Validating the why/how the contrast for functional MRI studies of Theory of Mind. <em>NeuroImage</em>. 99, 301-311.  <a href="http://www.bobspunt.com/papers/pdf/Spunt_&_Adolphs_2014.pdf">PDF</a> | <a href="http://neurovault.org/collections/445/">NeuroVault</a>  </p>
+</article></body></html>
 
 <p><img src="https://raw.githubusercontent.com/spunt/whyhowlocalizer/master/resources/design.jpg" alt="Factorial Design"></p>
 
@@ -72,17 +75,17 @@
 
 <p>To run the task, use the <em>run_task.m</em> file. It accepts two arguments. The first specifies the order to use. There are 4 orders to choose from. If you do not specify this argument, if you leave it empty, or if you define as zero, then one of the four orders will be randomly selected. The second argument, when specified with the value of "1", will do a brief test run of the task (which lasts only 20 seconds). For example, this will run a randomly chosen order of the complete task:</p>
 
-<pre><code>&gt;&gt; run_task 
+<pre><code>&gt;&gt; run_task
 </code></pre>
 
 <p>This will run order #3 of the complete task:</p>
 
-<pre><code>&gt;&gt; run_task(3)   
+<pre><code>&gt;&gt; run_task(3)
 </code></pre>
 
 <p>This will run a test run (consisting of just the 1st task block) of a randomly chosen order:    </p>
 
-<pre><code>&gt;&gt; run_task(0, 1)           
+<pre><code>&gt;&gt; run_task(0, 1)
 </code></pre>
 
 <h2>
