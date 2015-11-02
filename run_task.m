@@ -288,7 +288,8 @@ try
 
 catch
 
-    ptb_exit(defaults.path.utilities);
+    ptb_exit;
+    rmpath(defaults.path.utilities);
     psychrethrow(psychlasterror);
 
 end
@@ -317,6 +318,7 @@ Screen('Flip', w.win);
 ptb_any_key;
 
 %% Exit %%
-ptb_exit(defaults.path.utilities);
+ptb_exit;
+rmpath(defaults.path.utilities);
 
 end
