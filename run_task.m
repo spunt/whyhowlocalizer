@@ -68,7 +68,8 @@ try
     ptbVersion = PsychtoolboxVersion;
 catch
     url = 'https://psychtoolbox.org/PsychtoolboxDownload';
-    fprintf('Psychophysics Toolbox may not be installed or in your search path.\nSee: %s\n', url);
+    fprintf('\n\t!!! WARNING !!!\n\tPsychophysics Toolbox does not appear to on your search path!\n\tSee: %s\n\n', url);
+    return
 end
 
 %% Print Title %%
@@ -267,7 +268,7 @@ try
                     sca; rmpath(defaults.path.utilities)
                     fprintf('\nESCAPE KEY DETECTED\n'); return
                 end
-                tmpSeeker(t,8) = find(strcmpi(KbName(resp_set), resp)); 
+                tmpSeeker(t,8) = find(strcmpi(KbName(resp_set), resp));
 %                 tmpSeeker(t,8) = str2num(resp(1));
                 tmpSeeker(t,7) = rt + (defaults.maxDur*norespyet);
             end
@@ -287,7 +288,7 @@ try
 
 catch
 
-    sca; rmpath(defaults.path.utilities)
+    ptb_exit(defaults.path.utilities);
     psychrethrow(psychlasterror);
 
 end
@@ -313,9 +314,9 @@ end;
 %% End of Test Screen %%
 DrawFormattedText(w.win,'TEST COMPLETE\n\nPress any key to exit.','center','center',w.white,defaults.font.wrap);
 Screen('Flip', w.win);
-ptb_any_key; 
+ptb_any_key;
 
 %% Exit %%
-sca; rmpath(defaults.path.utilities)
+ptb_exit(defaults.path.utilities);
 
 end

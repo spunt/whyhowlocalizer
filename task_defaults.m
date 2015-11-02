@@ -30,10 +30,8 @@ defaults.screenres      = [1024 768];   % recommended screen resolution (if
 % Response Keys
 %==========================================================================
 defaults.escape         = 'ESCAPE'; % escape key (to exit early)
-% defaults.trigger        = '5%'; % task trigger key
-defaults.trigger        = 't'; % trigger key (to start ask)
-% defaults.valid_keys     = {'1!' '2@' '3#' '4$'}; % valid response keys...
-defaults.valid_keys     = {'a' 's' 'd' 'f'}; % valid response keys
+defaults.trigger        = '5%'; % task trigger key (to start task)
+defaults.valid_keys     = {'1!' '2@' '3#' '4$'}; % valid response keys
 % These correspond to the keys that the participant can use to make their
 % responses during task performance. The key in the first position (e.g.,
 % '1!') will be numerically coded as a 1 in the output data file; the key
