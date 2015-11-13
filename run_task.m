@@ -180,6 +180,7 @@ for i = 1:length(design.qim)
 end;
 instructTex = Screen('MakeTexture', w.win, imread([defaults.path.stim filesep 'instruction.jpg']));
 fixTex = Screen('MakeTexture', w.win, imread([defaults.path.stim filesep 'fixation.jpg']));
+line1       = strcat('Is the person', repmat('\n', 1, defaults.font.linesep));
 
 %% Get Coordinates for Centering ISI Cues
 isicues_xpos = zeros(length(design.isicues),1);
@@ -224,7 +225,7 @@ try
         %% Prepare Question Cue Screen (Still Waiting) %%
         if ~strcmpi(defaults.language, 'german')
             Screen('TextSize',w.win, defaults.font.size1); Screen('TextStyle', w.win, 0);
-            DrawFormattedText(w.win,'Is the person\n\n\n','center','center',w.white, defaults.font.wrap);
+            DrawFormattedText(w.win,line1,'center','center',w.white, defaults.font.wrap);
             Screen('TextStyle',w.win, 1); Screen('TextSize', w.win, defaults.font.size2);
         end
         DrawFormattedText(w.win, pbcue,'center','center', w.white, defaults.font.wrap);

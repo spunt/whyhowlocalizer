@@ -61,6 +61,7 @@ defaults.font.name      = 'Arial'; % default font
 defaults.font.size1     = 42; % default font size (smaller)
 defaults.font.size2     = 46; % default font size (bigger)
 defaults.font.wrap      = 42; % default font wrapping (arg to DrawFormattedText)
+defaults.font.linesep   = 3;  % spacing between first and second lines of question cue.
 
 % Timing (specify all in seconds)
 %==========================================================================
@@ -73,7 +74,7 @@ defaults.ignoreDur      = 0.15;     % dur after trial presentation in which
                                     % useful when participant provides a late
                                     % response to the previous trial)
                                     % DEFAULT VALUE = 0.15
-defaults.practiceenddur = 2.5; 
+defaults.practiceenddur = 2.5;      % Dur of fixation period following last practice trial
 end
 
 
