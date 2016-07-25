@@ -1,7 +1,7 @@
 ## OUTPUT VARIABLES
 
 |    Name   | Class  | Description |
-|-----------|--------|-------------|
+|-----------|--------|:-------------|
 | *subjectID* | char   | ID entered by experimenter for participant |
 | *result*    | struct | Primary output structure file (field definitions below            |
 | *slideName* | cell   | Stimulus filednames in order of presentation            |
@@ -11,12 +11,10 @@
 - **trialSeeker** : stores trial-wise runtime data
 - **qdata** : [128x4 Array]
 - **qim** : [128x2 Cell]
-- **preblockcues** : [16x1 Cell]
-- **isicues** : [16x1 Cell]
    
 ## result.blockSeeker
 |   Column   |                      Description                       |
-|------------|--------------------------------------------------------|
+|------------|:-------------------------------------------------------|
 | *Column 1* | block #                                                |
 | *Column 2* | condition (1=WhyFace, 2=WhyHand, 3=HowFace, 4=HowHand) |
 | *Column 3* | scheduled onset (s)                                    |
@@ -24,7 +22,7 @@
 
 ## result.trialSeeker
 |   Column   |                           Description                            |
-|------------|------------------------------------------------------------------|
+|------------|:-----------------------------------------------------------------|
 | *Column 1* | block #                                                          |
 | *Column 2* | trial # (within-block)                                           |
 | *Column 2* | condition (1=WhyFace, 2=WhyHand, 3=HowFace, 4=HowHand)           |
@@ -36,12 +34,17 @@
 | *Column 9* | (saved during runtime) trial offset [relative to trigger]                       |
 
 ## result.qdata
+`qdata` is a numeric array. Each row contains data for a different image and corresponds to the rows in `qim`.
+
 |   Column   |                           Description                            |
-|------------|------------------------------------------------------------------|
+|------------|:------------------------------------------------------------------|
 | *Column 1* | condition (1=WhyFace, 2=WhyHand, 3=HowFace, 4=HowHand)    |
 | *Column 2* | normative response (1=Yes, 2=No)                               |
 | *Column 2* | average valence rating (MTurk sample) [1(neg) to 9(pos)]          |
-| *Column 4* | luminance (see `RGB2LUM` below)     |
+| *Column 4* | estimated image luminance (see `RGB2LUM` below)     |
+
+## result.qim
+`qim` is a cell array. Each row contains data for a different image used in the experiment. 
 
 ### RGB2LUM
 Each color channel is weighted differently according to the CIE Color Space. CIE Luminance is computed assuming a modern monitor. For further detials, see Charles Pontyon's [Colour FAQ](http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html).
