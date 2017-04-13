@@ -1,0 +1,41 @@
+{
+    "doi": "10.5281/zenodo.50244",
+    "links": {
+        "doi": "https://doi.org/10.5281/zenodo.50244",
+        "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.50244.svg",
+        "html": "https://zenodo.org/record/50244"
+    },
+    "created": "2016-04-27T06:43:18+00:00",
+    "title": "Why/How Localizer (Citable Release)",
+    "modified": "2016-09-12T07:11:09.272323+00:00",
+    "submitted": true,
+    "record_id": 50244,
+    "state": "done",
+    "doi_url": "https://doi.org/10.5281/zenodo.50244",
+    "owner": 21612,
+    "metadata": {
+        "doi": "10.5281/zenodo.50244",
+        "description": "<p>This is the first formal &quot;release&quot; of the Why/How Localizer. This does not include an update to the software and is for the purposes of archiving and making the software citable via Zenodo. Major updates to the code will be released through this mechanism from now on. </p>",
+        "license": "other-open",
+        "title": "Why/How Localizer (Citable Release)",
+        "upload_type": "software",
+        "prereserve_doi": {
+            "doi": "10.5281/zenodo.50244",
+            "recid": 50244
+        },
+        "publication_date": "2016-04-22",
+        "creators": [
+            {
+                "name": "Robert P Spunt"
+            }
+        ],
+        "access_right": "open",
+        "related_identifiers": [
+            {
+                "scheme": "url",
+                "identifier": "https://github.com/spunt/whyhowlocalizer/tree/v1.0",
+                "relation": "isSupplementTo"
+            }
+        ]
+    }
+}
